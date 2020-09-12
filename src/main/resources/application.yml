@@ -1,0 +1,7 @@
+server:
+  error:
+    include-message: always
+
+number-fetcher:
+  url: https://sverigesradio.se/ringsaspelarvi
+  local-file: sverigesradio.html
