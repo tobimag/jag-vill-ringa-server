@@ -23,9 +23,9 @@ jobs:
     needs: build
     steps:
       - name: Build docker container
-        run: |-
-            mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
-          	docker build \
-              --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
-              --build-arg GITHUB_SHA="$GITHUB_SHA" \
-              --build-arg GITHUB_REF="$GITHUB_REF" \
+        run: |
+          mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
+          docker build \
+            --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" \
