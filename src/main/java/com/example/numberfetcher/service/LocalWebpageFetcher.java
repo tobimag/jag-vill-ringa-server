@@ -11,7 +11,6 @@ import org.jsoup.nodes.Document;
 public class LocalWebpageFetcher implements WebpageFetcher {
 
   private final String filename;
-  ClassLoader classLoader = getClass().getClassLoader();
 
   public LocalWebpageFetcher(WebpageFetcherProperties properties) {
     this.filename = properties.localFile;
@@ -25,6 +24,6 @@ public class LocalWebpageFetcher implements WebpageFetcher {
 
   private File getFile() {
     return new File(
-        Objects.requireNonNull(classLoader.getResource(filename)).getFile());
+        Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResource(filename)).getFile());
   }
 }

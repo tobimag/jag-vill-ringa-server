@@ -17,4 +17,7 @@ run: build
 docker-run: docker-build
 	docker run --name number-fetcher -e "SPRING_PROFILES_ACTIVE=live" -p 8080:8080 ${DOCKER_IMAGE}
 
+docker-run-dev: docker-build
+	docker run --name number-fetcher -e "SPRING_PROFILES_ACTIVE=dev" -p 8080:8080 ${DOCKER_IMAGE}
+
 .PHONEY: build, run, clean, docker-build, docker-run
