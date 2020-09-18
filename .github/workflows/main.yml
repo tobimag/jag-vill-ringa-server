@@ -7,7 +7,6 @@ on:
     branches: [ master ]
 
 env:
-  JAR_FILE: package
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   IMAGE: end-digits-fetcher
 
@@ -22,7 +21,7 @@ jobs:
       - name: Upload jar
         uses: actions/upload-artifact@v2
         with:
-          name: ${JAR_FILE}
+          name: Package
           path: build/libs
 
   build-docker:
@@ -32,10 +31,11 @@ jobs:
       - name: Download jar
         uses: actions/download-artifact@v2
         with:
-          name: ${JAR_FILE}
+          name: Package
       - name: Build docker container
         run: |
-          mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
+          ll
+          mkdir -p build/dependency && (cd build/dependency; jar -xf ../*.jar)
           docker build \
             --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
