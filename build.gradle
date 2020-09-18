@@ -23,6 +23,9 @@ dependencies {
     // Other
     compile 'org.jsoup:jsoup:1.13.1'
     compile "com.jason-goodwin:better-monads:0.4.0"
+
+    // Test stuff
+    testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
 }
 
 test {
