@@ -34,7 +34,7 @@ jobs:
           name: Package
       - name: Build docker container
         run: |
-          mkdir -p build/dependency && (cd build/dependency; jar -xf ../../libs/*.jar)
+          mkdir -p build/dependency && (cd build/dependency; ls ../../ -R; jar -xf ../../libs/*.jar)
           docker build \
             --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
