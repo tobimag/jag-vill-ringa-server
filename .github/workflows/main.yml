@@ -34,11 +34,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: Package
-      - name: Build docker container
+      - name: Build docker image
         run: |
           mkdir -p build/dependency && (cd build/dependency; jar -xf ../../*.jar)
           docker build \
             --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
-            --build-arg GITHUB_SHA="$GITHUB_SHA" \
-            --build-arg GITHUB_REF="$GITHUB_REF" \
             .
+      - name: Publish docker image to GCR
+        run: |
+          docker push "gcr.eu/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
