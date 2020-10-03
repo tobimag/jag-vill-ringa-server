@@ -10,7 +10,7 @@ env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   IMAGE: end-digits-fetcher
   HOST: eu.gcr.io
-  REGISTRY_KEY: $ { secrets.GCP_SA_KEY }}
+  REGISTRY_KEY: ${{ secrets.GCP_SA_KEY }}
 
 jobs:
   build:
@@ -37,8 +37,8 @@ jobs:
 
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@0.1.3
         with:
-          service_account_key: $REGISTRY_KEY
-          project_id: $PROJECT_ID
+          service_account_key: ${{ env.REGISTRY_KEY }}
+          project_id: ${{ env.PROJECT_ID }}
 
       - run: |-
           gcloud --quiet auth configure-docker
