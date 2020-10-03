@@ -9,6 +9,8 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   IMAGE: end-digits-fetcher
+  HOST: eu.gcr.io
+  REGISTRY_KEY: $ { secrets.GCP_SA_KEY }}
 
 jobs:
   build:
@@ -16,30 +18,43 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
       - name: Build project
         run: make build
+
       - name: Upload jar
         uses: actions/upload-artifact@v2
         with:
           name: Package
           path: build/libs
 
-  build-docker:
+  build-and-publish-docker:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@0.1.3
+        with:
+          service_account_key: $REGISTRY_KEY
+          project_id: $PROJECT_ID
+
+      - run: |-
+          gcloud --quiet auth configure-docker
+
       - name: Download jar
         uses: actions/download-artifact@v2
         with:
           name: Package
+
       - name: Build docker image
         run: |
           mkdir -p build/dependency && (cd build/dependency; jar -xf ../../*.jar)
           docker build \
-            --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
+            --tag "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
             .
+
       - name: Publish docker image to GCR
         run: |
-          docker push "gcr.eu/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+          docker push "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
