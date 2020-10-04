@@ -1,4 +1,4 @@
-package com.example.numberfetcher.resource;
+package com.example.enddigitsfetcher.resource;
 
 import static lombok.AccessLevel.PUBLIC;
 

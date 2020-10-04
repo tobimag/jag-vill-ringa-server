@@ -1,4 +1,4 @@
-package com.example.numberfetcher.service;
+package com.example.enddigitsfetcher.service.webpagefetcher;
 
 import static lombok.AccessLevel.PUBLIC;
 
@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
-@ConfigurationProperties(prefix = "number-fetcher")
+@ConfigurationProperties(prefix = "end-digits-fetcher")
 @ConstructorBinding
 @FieldDefaults(level = PUBLIC, makeFinal = true)
 @AllArgsConstructor

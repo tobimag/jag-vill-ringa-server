@@ -1,5 +1,6 @@
-package com.example.numberfetcher.service;
+package com.example.enddigitsfetcher.service.enddigitsfetcher;
 
+import com.example.enddigitsfetcher.service.webpagefetcher.WebpageFetcher;
 import com.jasongoodwin.monads.Try;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;

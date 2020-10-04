@@ -1,10 +1,12 @@
-package com.example.numberfetcher.service;
+package com.example.enddigitsfetcher.service;
 
 import static com.jasongoodwin.monads.Try.successful;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import com.example.enddigitsfetcher.service.enddigitsfetcher.EndDigitsFetcher;
+import com.example.enddigitsfetcher.service.webpagefetcher.WebpageFetcher;
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

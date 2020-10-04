@@ -1,7 +1,4 @@
-package com.example.numberfetcher.service;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+package com.example.enddigitsfetcher.service.enddigitsfetcher;
 
 public class NumberNotFoundException extends RuntimeException {
 

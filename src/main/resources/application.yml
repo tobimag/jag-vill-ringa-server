@@ -2,6 +2,6 @@ server:
   error:
     include-message: always
 
-number-fetcher:
+end-digits-fetcher:
   url: https://sverigesradio.se/ringsaspelarvi
   local-file: sverigesradio.html

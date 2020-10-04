@@ -1,8 +1,8 @@
-package com.example.numberfetcher.resource;
+package com.example.enddigitsfetcher.resource;
 
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
-import com.example.numberfetcher.service.EndDigitsFetcher;
+import com.example.enddigitsfetcher.service.enddigitsfetcher.EndDigitsFetcher;
 import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

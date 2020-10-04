@@ -1,9 +1,9 @@
-package com.example.numberfetcher.boot;
+package com.example.enddigitsfetcher.boot;
 
-import com.example.numberfetcher.service.JsoupWebpageFetcher;
-import com.example.numberfetcher.service.LocalWebpageFetcher;
-import com.example.numberfetcher.service.WebpageFetcher;
-import com.example.numberfetcher.service.WebpageFetcherProperties;
+import com.example.enddigitsfetcher.service.webpagefetcher.JsoupWebpageFetcher;
+import com.example.enddigitsfetcher.service.webpagefetcher.LocalWebpageFetcher;
+import com.example.enddigitsfetcher.service.webpagefetcher.WebpageFetcher;
+import com.example.enddigitsfetcher.service.webpagefetcher.WebpageFetcherProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

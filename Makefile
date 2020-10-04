@@ -1,5 +1,5 @@
 GRADLE=./gradlew
-DOCKER_IMAGE=number-fetcher
+DOCKER_IMAGE=end-digits-fetcher
 
 build:
 	${GRADLE} build
@@ -12,12 +12,12 @@ clean:
 	${GRADLE} clean
 
 run: build
-	java -jar build/libs/number-fetcher-0.0.1-SNAPSHOT.jar
+	java -jar build/libs/end-digits-fetcher-0.0.1-SNAPSHOT.jar
 
 docker-run: docker-build
-	docker run --name number-fetcher -e "SPRING_PROFILES_ACTIVE=live" -p 8080:8080 ${DOCKER_IMAGE}
+	docker run --name end-digits-fetcher -e "SPRING_PROFILES_ACTIVE=live" -p 8080:8080 ${DOCKER_IMAGE}
 
 docker-run-dev: docker-build
-	docker run --name number-fetcher -e "SPRING_PROFILES_ACTIVE=dev" -p 8080:8080 ${DOCKER_IMAGE}
+	docker run --name end-digits-fetcher-dev -e "SPRING_PROFILES_ACTIVE=dev" -p 8080:8080 ${DOCKER_IMAGE}
 
-.PHONEY: build, run, clean, docker-build, docker-run
+.PHONEY: build, run, clean, docker-build, docker-run, docker-run-dev

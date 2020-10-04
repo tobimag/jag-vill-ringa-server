@@ -1,4 +1,4 @@
-package com.example.numberfetcher.service;
+package com.example.enddigitsfetcher.service.webpagefetcher;
 
 import com.jasongoodwin.monads.Try;
 import java.io.File;
