@@ -73,3 +73,4 @@ jobs:
           image: $HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA
           service: end-digits-fetcher
           env_vars: SPRING_PROFILES_ACTIVE=live
+          project_id: ${{ env.PROJECT_ID }}
