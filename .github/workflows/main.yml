@@ -10,6 +10,7 @@ env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   IMAGE: end-digits-fetcher
   SERVICE_NAME: end-digits-fetcher
+  REGION: europe-north1
   HOST: eu.gcr.io
   CONTAINER_REGISTRY_ACCOUNT_KEY: ${{ secrets.GCP_SA_KEY }}
   CLOUD_RUN_ACCOUNT_KEY: ${{ secrets.GCP_CLOUD_RUN_SA_KEY }}
@@ -76,8 +77,8 @@ jobs:
       - name: Deploy
         run: |-
           gcloud run deploy "$SERVICE_NAME" \
-            --quiet \
-            --set-env-vars [SPRING_PROFILES_ACTIVE=live] \
             --image "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
+            --region "$REGION" \\
+            --set-env-vars [SPRING_PROFILES_ACTIVE=live] \
             --platform "managed" \
             --allow-unauthenticated
