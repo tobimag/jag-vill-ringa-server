@@ -78,7 +78,7 @@ jobs:
         run: |-
           gcloud run deploy "$SERVICE_NAME" \
             --image "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
-            --region "$REGION" \\
+            --region "$REGION" \
             --set-env-vars [SPRING_PROFILES_ACTIVE=live] \
             --platform "managed" \
             --allow-unauthenticated
