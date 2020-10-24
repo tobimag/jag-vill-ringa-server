@@ -9,6 +9,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   IMAGE: end-digits-fetcher
+  SERVICE_NAME: end-digits-fetcher
   HOST: eu.gcr.io
   CONTAINER_REGISTRY_ACCOUNT_KEY: ${{ secrets.GCP_SA_KEY }}
   CLOUD_RUN_ACCOUNT_KEY: ${{ secrets.GCP_CLOUD_RUN_SA_KEY }}
@@ -73,8 +74,11 @@ jobs:
 
 
       - name: Deploy
-        uses: GoogleCloudPlatform/github-actions/deploy-cloudrun@master
-        with:
-          image: $HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA
-          service: end-digits-fetcher
-          env_vars: SPRING_PROFILES_ACTIVE=live
+        run: |-
+          gcloud run deploy "$SERVICE_NAME" \
+            --quiet \
+            --set-env-vars [SPRING_PROFILES_ACTIVE=live]
+            --region "$RUN_REGION" \
+            --image "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
+            --platform "managed" \
+            --allow-unauthenticated
