@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class BeanFactory {
 
-  @Profile("live")
+  @Profile("!dev")
   @Bean
   WebpageFetcher jsoupWebpageFetcher(WebpageFetcherProperties properties) {
     return new JsoupWebpageFetcher(properties);
