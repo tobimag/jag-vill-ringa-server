@@ -9,11 +9,11 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   IMAGE: end-digits-fetcher
-  SERVICE_NAME: end-digits-fetcher
-  REGION: europe-north1
   HOST: eu.gcr.io
   CONTAINER_REGISTRY_ACCOUNT_KEY: ${{ secrets.GCP_SA_KEY }}
-  CLOUD_RUN_ACCOUNT_KEY: ${{ secrets.GCP_CLOUD_RUN_SA_KEY }}
+  COMPUTE_ENGINE_ACCOUNT_KEY: ${{ secrets.GCP_COMPUTE_ENGINE_SA_KEY }}
+  GCE_INSTANCE: instance-1
+  GCE_INSTANCE_ZONE: europe-north1-a
 
 jobs:
   build:
@@ -73,15 +73,11 @@ jobs:
       - name: Setup gcloud
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@0.1.3
         with:
-          service_account_key: ${{ env.CLOUD_RUN_ACCOUNT_KEY }}
+          service_account_key: ${{ env.GCP_COMPUTE_ENGINE_SA_KEY }}
           project_id: ${{ env.PROJECT_ID }}
-
 
       - name: Deploy
         run: |-
-          gcloud run deploy "$SERVICE_NAME" \
-            --image "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
-            --region "$REGION" \
-            --set-env-vars [SPRING_PROFILES_ACTIVE=live] \
-            --platform "managed" \
-            --allow-unauthenticated
+          gcloud compute instances update-container "$GCE_INSTANCE" \
+                    --zone "$GCE_INSTANCE_ZONE" \
+                    --container-image "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA
