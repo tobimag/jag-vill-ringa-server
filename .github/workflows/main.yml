@@ -80,4 +80,4 @@ jobs:
         run: |-
           gcloud compute instances update-container "$GCE_INSTANCE" \
                     --zone "$GCE_INSTANCE_ZONE" \
-                    --container-image "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA
+                    --container-image "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
