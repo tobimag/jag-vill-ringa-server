@@ -12,7 +12,7 @@ env:
   HOST: eu.gcr.io
   CONTAINER_REGISTRY_ACCOUNT_KEY: ${{ secrets.GCP_SA_KEY }}
   COMPUTE_ENGINE_ACCOUNT_KEY: ${{ secrets.GCP_COMPUTE_ENGINE_SA_KEY }}
-  GCE_INSTANCE: instance-1
+  GCE_INSTANCE: jag-vill-ringa-instance
   GCE_INSTANCE_ZONE: europe-north1-a
 
 jobs:
