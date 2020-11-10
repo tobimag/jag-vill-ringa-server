@@ -73,7 +73,7 @@ jobs:
       - name: Setup gcloud
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@0.1.3
         with:
-          service_account_key: ${{ env.GCP_COMPUTE_ENGINE_SA_KEY }}
+          service_account_key: ${{ env.COMPUTE_ENGINE_ACCOUNT_KEY }}
           project_id: ${{ env.PROJECT_ID }}
 
       - name: Deploy
