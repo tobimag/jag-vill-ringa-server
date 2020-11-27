@@ -2,6 +2,14 @@ server:
   error:
     include-message: always
 
+spring:
+  datasource:
+    url: jdbc:postgresql://end-digits-postgres-db:5432/end-digits-db
+    username: postgres
+    password: mysecretpassword
+  liquibase:
+  change-log: classpath:/db/db.changelog-master.yaml
+
 end-digits-fetcher:
   url: https://sverigesradio.se/ringsaspelarvi
   local-file: sverigesradio.html

@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-end_digits
+      author: end-digits-server
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            tableExists:
+              tableName: end_digits
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: user_pkey
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: digits
+                  type: VARCHAR(250)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: timestamp
+                  type: "timestamp with time zone"
+            tableName: end_digits

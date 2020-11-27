@@ -12,7 +12,7 @@ public class ScheduledFetching {
 
   EndDigitsFetcher endDigitsFetcher;
 
-  @Scheduled(cron = "0 */5 07-09 * * SAT")
+  @Scheduled(cron = "0 */5 07-09 * * SAT", zone = "CET")
   public void fetch() {
     endDigitsFetcher.fetchEndDigits()
         .onSuccess(endDigits -> log.info("Fetched end-digits {}", endDigits))

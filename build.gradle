@@ -16,9 +16,13 @@ repositories {
 dependencies {
     // Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Postgres
+    implementation 'org.postgresql:postgresql'
+
+    // Liquibase
+    implementation 'org.liquibase:liquibase-core:3.8.1'
 
     // Other
     compile 'org.jsoup:jsoup:1.13.1'
@@ -26,6 +30,9 @@ dependencies {
 
     // Test stuff
     testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 }
 
 test {
