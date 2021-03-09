@@ -2,8 +2,7 @@ package com.example.enddigitsfetcher.resource;
 
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
-import com.example.enddigitsfetcher.service.enddigitsfetcher.EndDigitsFetcher;
-import java.time.OffsetDateTime;
+import com.example.enddigitsfetcher.service.enddigitsservice.EndDigitsService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,35 +13,34 @@ import org.springframework.web.server.ResponseStatusException;
 @AllArgsConstructor
 public class EndDigitsFetcherController {
 
-  EndDigitsFetcher endDigitsFetcher;
+  EndDigitsService endDigitsFetcher;
 
   @GetMapping("/current-end-digits")
-  public EndDigitsDto getCurrentEndDigits() {
-    return endDigitsFetcher.fetchEndDigits()
+  public EndDigitsResponse getCurrentEndDigits() {
+    return endDigitsFetcher.fetchCurrentEndDigits()
         .onFailure(failure -> {
-          throw new ResponseStatusException(SERVICE_UNAVAILABLE, "Ending digits not found", failure);
+          throw new ResponseStatusException(SERVICE_UNAVAILABLE, "End digits not found", failure);
         })
-        .map(number -> new EndDigitsDto(number, OffsetDateTime.now()))
+        .map(entity -> new EndDigitsResponse(entity.getEndDigits(), entity.getTimestamp()))
         .getUnchecked();
   }
 
-  @GetMapping("latest-end-digits")
-  public EndDigitsDto getLatestEndDigits() {
+  @GetMapping("/latest-end-digits")
+  public EndDigitsResponse getLatestEndDigits() {
     return endDigitsFetcher.getLatestEndDigits()
         .onFailure(failure -> {
           throw new ResponseStatusException(SERVICE_UNAVAILABLE, "Unable to retrieve end digits", failure);
         })
-        .map(entity -> new EndDigitsDto(entity.getEndDigits(), entity.getTimestamp()))
+        .map(entity -> new EndDigitsResponse(entity.getEndDigits(), entity.getTimestamp()))
         .getUnchecked();
   }
 
   @PostMapping("/store-current-end-digits")
-  public EndDigitsDto storeCurrentEndDigits() {
-    return endDigitsFetcher.storeEndDigits()
+  public void storeCurrentEndDigits() {
+    endDigitsFetcher.storeEndDigits()
         .onFailure(failure -> {
           throw new ResponseStatusException(SERVICE_UNAVAILABLE, "Failed to store current end digits", failure);
         })
-        .map(entity -> new EndDigitsDto(entity.getEndDigits(), entity.getTimestamp()))
         .getUnchecked();
   }
 

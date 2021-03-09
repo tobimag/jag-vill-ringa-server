@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(level = PUBLIC, makeFinal = true)
 @AllArgsConstructor
-public class EndDigitsDto {
+public class EndDigitsResponse {
 
   String digits;
   OffsetDateTime timestamp;

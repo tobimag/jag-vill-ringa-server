@@ -1,4 +1,4 @@
-package com.example.enddigitsfetcher.service.enddigitsfetcher;
+package com.example.enddigitsfetcher.service.enddigitsservice;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScheduledFetching {
 
-  EndDigitsFetcher endDigitsFetcher;
+  EndDigitsService endDigitsService;
 
   @Scheduled(cron = "0 */5 07-09 * * SAT", zone = "CET")
   public void fetch() {
-    endDigitsFetcher.fetchEndDigits()
+    endDigitsService.fetchCurrentEndDigits()
         .onSuccess(endDigits -> log.info("Fetched end-digits {}", endDigits))
         .onFailure(failure -> log.info("Failed fetching end-digits", failure));
   }

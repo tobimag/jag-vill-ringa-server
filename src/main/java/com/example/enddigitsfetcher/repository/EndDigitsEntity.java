@@ -3,6 +3,7 @@ package com.example.enddigitsfetcher.repository;
 import static javax.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
+import com.example.enddigitsfetcher.service.valueobjects.EndDigits;
 import java.time.OffsetDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,8 +37,8 @@ public class EndDigitsEntity {
     this.timestamp = timestamp;
   }
 
-  public static EndDigitsEntity create(String nedDigits) {
-    return new EndDigitsEntity(nedDigits, OffsetDateTime.now());
+  public static EndDigitsEntity create(EndDigits endDigits) {
+    return new EndDigitsEntity(endDigits.getEndDigits(), OffsetDateTime.now());
   }
 
 }
