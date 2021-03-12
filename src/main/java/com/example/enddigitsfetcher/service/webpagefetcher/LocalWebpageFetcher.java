@@ -6,8 +6,12 @@ import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
+@Profile("dev")
 public class LocalWebpageFetcher implements WebpageFetcher {
 
   private final String filename;

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScheduledFetching {
 
-  EndDigitsService endDigitsService;
+  private final EndDigitsService endDigitsService;
 
   @Scheduled(cron = "0 */5 07-09 * * SAT", zone = "CET")
   public void fetch() {

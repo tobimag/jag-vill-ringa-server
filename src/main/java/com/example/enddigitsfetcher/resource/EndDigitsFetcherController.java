@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 @AllArgsConstructor
 public class EndDigitsFetcherController {
 
-  EndDigitsService endDigitsFetcher;
+  private final EndDigitsService endDigitsFetcher;
 
   @GetMapping("/current-end-digits")
   public EndDigitsResponse getCurrentEndDigits() {
