@@ -4,9 +4,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://end-digits-postgres-db:5432/end-digits-db
+    url: jdbc:postgresql://10.30.80.3:5432/end-digits-db
     username: postgres
-    password: mysecretpassword
+    password: changeme
   change-log: classpath:/db/db.changelog-master.yaml
 
 end-digits-fetcher:
