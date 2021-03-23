@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:postgresql://10.30.80.3:5432/end-digits-db
     username: postgres
-    password: changeme
+    password: ${DBPASS}
   change-log: classpath:/db/db.changelog-master.yaml
 
 end-digits-fetcher:
