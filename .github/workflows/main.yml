@@ -14,7 +14,7 @@ env:
   COMPUTE_ENGINE_ACCOUNT_KEY: ${{ secrets.GCP_COMPUTE_ENGINE_SA_KEY }}
   GCE_INSTANCE: jag-vill-ringa-instance
   GCE_INSTANCE_ZONE: europe-north1-a
-  DB_PASSWORD: $ {{ secrets.DB_PASSWORD }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
 jobs:
   build:
@@ -84,4 +84,4 @@ jobs:
           gcloud compute instances update-container "$GCE_INSTANCE" \
             --zone "$GCE_INSTANCE_ZONE" \
             --container-image "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
-            --container-env DBPASS=${{ env.DB_PASSWORD }}
+            --container-env DBPASS="$DB_PASSWORD"
