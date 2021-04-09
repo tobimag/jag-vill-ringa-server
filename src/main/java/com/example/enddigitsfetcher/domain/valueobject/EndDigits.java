@@ -6,12 +6,14 @@ import static com.jasongoodwin.monads.Try.successful;
 import com.jasongoodwin.monads.Try;
 import lombok.AllArgsConstructor;
 import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 
 @Value
 @AllArgsConstructor
+@Slf4j
 public class EndDigits {
 
-  String endDigits;
+  String value;
 
   public static Try<EndDigits> endDigits(String endDigits) {
     if (endDigits.length() == 2) {

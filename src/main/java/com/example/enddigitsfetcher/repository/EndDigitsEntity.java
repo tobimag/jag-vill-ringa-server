@@ -13,12 +13,14 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "end_digits")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class EndDigitsEntity {
 
   @Id
@@ -39,7 +41,7 @@ public class EndDigitsEntity {
   }
 
   public static EndDigitsEntity create(EndDigits endDigits) {
-    return new EndDigitsEntity(endDigits.getEndDigits(), OffsetDateTime.now());
+    return new EndDigitsEntity(endDigits.getValue(), OffsetDateTime.now());
   }
 
 }

@@ -15,4 +15,8 @@ public class FetchedEndDigits {
     return EndDigits.endDigits(endDigits)
                     .map(ed -> new FetchedEndDigits(ed, timestamp));
   }
+
+  public static FetchedEndDigits create(EndDigits endDigits, OffsetDateTime timestamp) {
+    return new FetchedEndDigits(endDigits, timestamp);
+  }
 }

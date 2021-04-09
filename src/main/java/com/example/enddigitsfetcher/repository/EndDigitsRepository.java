@@ -5,10 +5,12 @@ import com.example.enddigitsfetcher.exception.EndDigitsEntityNotFoundException;
 import com.example.enddigitsfetcher.exception.FailedSavingEndDigits;
 import com.jasongoodwin.monads.Try;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class EndDigitsRepository {
 
   private final EndDigitsDao dao;
@@ -16,7 +18,7 @@ public class EndDigitsRepository {
   public Try<FetchedEndDigits> save(FetchedEndDigits fetchedEndDigits) {
     return Try.ofFailable(() -> dao.save(EndDigitsMapper.toEntity(fetchedEndDigits)))
               .onFailure(FailedSavingEndDigits::new)
-              .flatMap(entity -> FetchedEndDigits.create(entity.getEndDigits(), entity.getTimestamp()));
+              .flatMap(EndDigitsMapper::fromEntity);
   }
 
   public Try<FetchedEndDigits> getLatestEndDigits() {

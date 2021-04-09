@@ -3,10 +3,12 @@ package com.example.enddigitsfetcher.service.enddigitsservice;
 import static java.time.OffsetDateTime.now;
 
 import com.example.enddigitsfetcher.domain.FetchedEndDigits;
+import com.example.enddigitsfetcher.domain.valueobject.EndDigits;
 import com.example.enddigitsfetcher.repository.EndDigitsRepository;
 import com.example.enddigitsfetcher.service.webpagefetcher.WebpageFetcher;
 import com.example.enddigitsfetcher.service.webpagefetcher.WebpageParser;
 import com.jasongoodwin.monads.Try;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,11 @@ public class EndDigitsService {
                .onFailure(throwable -> log.info(throwable.getMessage()));
   }
 
+  public Try<FetchedEndDigits> storeEndDigits(EndDigits endDigits) {
+    return repository.save(FetchedEndDigits.create(endDigits, OffsetDateTime.now()))
+                     .onFailure(throwable -> log.info(throwable.getMessage()));
+  }
+
   public Try<FetchedEndDigits> fetchCurrentEndDigits() {
     return webpageFetcher.getWebpage()
                          .flatMap(webpageParser::parseWebpage)
@@ -37,5 +44,4 @@ public class EndDigitsService {
     return repository.getLatestEndDigits()
                      .onFailure(throwable -> log.info(throwable.getMessage()));
   }
-
 }

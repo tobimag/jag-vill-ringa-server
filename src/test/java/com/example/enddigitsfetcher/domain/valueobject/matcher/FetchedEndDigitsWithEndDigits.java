@@ -3,7 +3,6 @@ package com.example.enddigitsfetcher.domain.valueobject.matcher;
 import static org.hamcrest.core.Is.is;
 
 import com.example.enddigitsfetcher.domain.FetchedEndDigits;
-import com.example.enddigitsfetcher.domain.valueobject.EndDigits;
 import lombok.AllArgsConstructor;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -20,7 +19,7 @@ public class FetchedEndDigitsWithEndDigits extends TypeSafeDiagnosingMatcher<Fet
 
   @Override
   protected boolean matchesSafely(FetchedEndDigits item, Description mismatchDescription) {
-    if (matcher.matches(item.getEndDigits().getEndDigits())) {
+    if (matcher.matches(item.getEndDigits().getValue())) {
       return true;
     } else {
       mismatchDescription.appendText("was an EndDigits whose value");

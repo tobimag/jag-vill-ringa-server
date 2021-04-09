@@ -19,11 +19,11 @@ public class EndDigitsWithValue extends TypeSafeDiagnosingMatcher<EndDigits> {
 
   @Override
   protected boolean matchesSafely(EndDigits item, Description mismatchDescription) {
-    if (matcher.matches(item.getEndDigits())) {
+    if (matcher.matches(item.getValue())) {
       return true;
     } else {
       mismatchDescription.appendText("was an EndDigits whose value");
-      matcher.describeMismatch(item.getEndDigits(), mismatchDescription);
+      matcher.describeMismatch(item.getValue(), mismatchDescription);
       return false;
     }
   }
