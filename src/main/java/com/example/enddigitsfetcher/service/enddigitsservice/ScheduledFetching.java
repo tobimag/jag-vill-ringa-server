@@ -14,7 +14,7 @@ public class ScheduledFetching {
 
   @Scheduled(cron = "0 */5 07-09 * * SAT", zone = "CET")
   public void fetch() {
-    endDigitsService.fetchCurrentEndDigits()
+    endDigitsService.storeCurrentEndDigits()
         .onSuccess(endDigits -> log.info("Fetched end-digits {}", endDigits))
         .onFailure(failure -> log.info("Failed fetching end-digits", failure));
   }

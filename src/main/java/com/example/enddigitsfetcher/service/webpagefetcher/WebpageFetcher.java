@@ -5,6 +5,6 @@ import org.jsoup.nodes.Document;
 
 public interface WebpageFetcher {
 
-  Try<Document> get();
+  Try<Document> getWebpage();
 
 }

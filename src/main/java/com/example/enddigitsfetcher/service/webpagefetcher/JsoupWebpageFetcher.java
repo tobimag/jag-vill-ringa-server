@@ -19,9 +19,8 @@ public class JsoupWebpageFetcher implements WebpageFetcher {
   }
 
   @Override
-  public Try<Document> get() {
-    return Try.ofFailable(() -> Jsoup.connect(url).get())
-        .onFailure(throwable -> log.info(throwable.getMessage()));
+  public Try<Document> getWebpage() {
+    return Try.ofFailable(() -> Jsoup.connect(url).get());
   }
 
 }

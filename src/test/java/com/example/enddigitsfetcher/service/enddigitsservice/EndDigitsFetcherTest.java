@@ -1,25 +1,25 @@
 package com.example.enddigitsfetcher.service.enddigitsservice;
 
-import static com.example.enddigitsfetcher.matchers.IsFailedTryWithException.isFailedTryWithException;
-import static com.example.enddigitsfetcher.matchers.IsSuccessfulTryWithValue.isSuccessfulTryWithValue;
-import static com.example.enddigitsfetcher.service.valueobjects.EndDigits.endDigits;
-import static com.jasongoodwin.monads.Try.failure;
-import static com.jasongoodwin.monads.Try.successful;
-import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
+import static com.example.enddigitsfetcher.domain.valueobject.matcher.FetchedEndDigitsWithEndDigitMatcher.equalsFetchedEndDigits;
+import static com.example.enddigitsfetcher.domain.valueobject.matcher.FetchedEndDigitsWithEndDigits.isFetchedEndDigitsWithValue;
+import static com.example.enddigitsfetcher.matcher.FailedTryWithException.isFailedTryWithException;
+import static com.example.enddigitsfetcher.matcher.SuccessfulTryWithValue.isSuccessfulTryWith;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
-import com.example.enddigitsfetcher.repository.EndDigitsEntity;
+import com.example.enddigitsfetcher.domain.FetchedEndDigits;
+import com.example.enddigitsfetcher.domain.valueobject.EndDigits;
 import com.example.enddigitsfetcher.repository.EndDigitsRepository;
-import com.example.enddigitsfetcher.service.valueobjects.EndDigits;
-import com.example.enddigitsfetcher.service.webpagefetcher.NumberNotFoundException;
 import com.example.enddigitsfetcher.service.webpagefetcher.WebpageFetcher;
 import com.example.enddigitsfetcher.service.webpagefetcher.WebpageParser;
-import java.util.Optional;
-import javax.persistence.EntityNotFoundException;
+import com.jasongoodwin.monads.Try;
+import java.time.OffsetDateTime;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,44 +41,114 @@ class EndDigitsFetcherTest {
   @InjectMocks
   EndDigitsService subject;
 
-  @Test
-  void shouldGetCurrentEndDigits() {
-    final String expectedEndDigit = "14";
-    when(webpageFetcher.get()).thenReturn(successful(Jsoup.parse(String.format("<HTML><a>Slutsiffra just nu: %s</a></HTML>", expectedEndDigit))));
-    when(webpageParser.parseWebpage(any())).thenReturn(successful(endDigits(expectedEndDigit)));
+  final String expectedEndDigit = "14";
+  final Document webpage = Jsoup.parse(String.format("<HTML><a>Slutsiffra just nu: %s</a></HTML>", expectedEndDigit));
+  final EndDigits endDigits = new EndDigits(expectedEndDigit);
+  final FetchedEndDigits fetchedEndDigits = new FetchedEndDigits(endDigits, OffsetDateTime.now());
 
-    assertThat(subject.fetchCurrentEndDigits(), isSuccessfulTryWithValue(hasProperty("endDigits", is(expectedEndDigit))));
+  @Test
+  void shouldStoreEndDigits() {
+
+    when(webpageFetcher.getWebpage()).thenReturn(Try.successful(webpage));
+    when(webpageParser.parseWebpage(eq(webpage))).thenReturn(Try.successful(endDigits));
+    when(repository.save(argThat(equalsFetchedEndDigits(endDigits)))).thenReturn(Try.successful(fetchedEndDigits));
+
+    Try<FetchedEndDigits> result = subject.storeCurrentEndDigits();
+
+    assertThat(result, isSuccessfulTryWith(is(fetchedEndDigits)));
+
   }
 
   @Test
-  void shouldHandleFailureWhenFetchingWebpage() {
-    when(webpageFetcher.get()).thenReturn(failure(new Exception("Something went wrong")));
+  void shouldHandleFailureWhenGettingWebpageWhenStoringEndDigits() {
 
-    assertThat(subject.fetchCurrentEndDigits(), isFailedTryWithException(Exception.class));
+    when(webpageFetcher.getWebpage()).thenReturn(Try.failure(new RuntimeException()));
+
+    Try<FetchedEndDigits> result = subject.storeCurrentEndDigits();
+
+    assertThat(result, isFailedTryWithException(RuntimeException.class));
+
   }
 
   @Test
-  void shouldHandleFailureWhenParsingWebpage() {
-    final String expectedEndDigit = "14";
-    when(webpageFetcher.get()).thenReturn(successful(Jsoup.parse(String.format("<HTML><a>Slutsiffra just nu: %s</a></HTML>", expectedEndDigit))));
-    when(webpageParser.parseWebpage(any())).thenReturn(failure(new NumberNotFoundException()));
+  void shouldHandleFailureWhenParsingWhenStoringEndDigits() {
 
-    assertThat(subject.fetchCurrentEndDigits(), isFailedTryWithException(NumberNotFoundException.class));
+    when(webpageFetcher.getWebpage()).thenReturn(Try.successful(webpage));
+    when(webpageParser.parseWebpage(eq(webpage))).thenReturn(Try.failure(new RuntimeException()));
+
+    Try<FetchedEndDigits> result = subject.storeCurrentEndDigits();
+
+    assertThat(result, isFailedTryWithException(RuntimeException.class));
+
+  }
+
+  @Test
+  void shouldHandleFailureWhenSavingWhenStoringEndDigits() {
+
+    when(webpageFetcher.getWebpage()).thenReturn(Try.successful(webpage));
+    when(webpageParser.parseWebpage(eq(webpage))).thenReturn(Try.successful(endDigits));
+    when(repository.save(argThat(equalsFetchedEndDigits(endDigits)))).thenReturn(Try.failure(new RuntimeException()));
+
+    Try<FetchedEndDigits> result = subject.storeCurrentEndDigits();
+
+    assertThat(result, isFailedTryWithException(RuntimeException.class));
+
+  }
+
+  @Test
+  void shouldFetchEndDigits() {
+
+    when(webpageFetcher.getWebpage()).thenReturn(Try.successful(webpage));
+    when(webpageParser.parseWebpage(eq(webpage))).thenReturn(Try.successful(endDigits));
+
+    Try<FetchedEndDigits> result = subject.fetchCurrentEndDigits();
+
+    assertThat(result, isSuccessfulTryWith(isFetchedEndDigitsWithValue(expectedEndDigit)));
+
+  }
+
+  @Test
+  void shouldHandleFailureWhenGettingWebpageWhenFetchingEndDigits() {
+
+    when(webpageFetcher.getWebpage()).thenReturn(Try.failure(new RuntimeException()));
+
+    Try<FetchedEndDigits> result = subject.fetchCurrentEndDigits();
+
+    assertThat(result, isFailedTryWithException(RuntimeException.class));
+
+  }
+
+  @Test
+  void shouldHandleFailureWhenParsingWebpageWhenFetchingEndDigits() {
+
+    when(webpageFetcher.getWebpage()).thenReturn(Try.successful(webpage));
+    when(webpageParser.parseWebpage(eq(webpage))).thenReturn(Try.failure(new RuntimeException()));
+
+    Try<FetchedEndDigits> result = subject.storeCurrentEndDigits();
+
+    assertThat(result, isFailedTryWithException(RuntimeException.class));
+
   }
 
   @Test
   void shouldGetLatestEndDigits() {
-    final EndDigitsEntity expectedEndDigits = EndDigitsEntity.create(endDigits("14"));
-    when(repository.findTopByOrderByIdDesc()).thenReturn(Optional.of(expectedEndDigits));
 
-    assertThat(subject.getLatestEndDigits(), isSuccessfulTryWithValue(is(expectedEndDigits)));
+    when(repository.getLatestEndDigits()).thenReturn(Try.successful(fetchedEndDigits));
+
+    Try<FetchedEndDigits> result = subject.getLatestEndDigits();
+
+    assertThat(result, isSuccessfulTryWith(is(fetchedEndDigits)));
+
   }
 
   @Test
-  void shouldHandleEmptyResponseWWhenGettingLatestEndDigits() {
-    when(repository.findTopByOrderByIdDesc()).thenReturn(Optional.empty());
+  void shouldHandleFailureWhenGettingLatestEndDigits() {
 
-    assertThat(subject.getLatestEndDigits(), isFailedTryWithException(EntityNotFoundException.class));
+    when(repository.getLatestEndDigits()).thenReturn(Try.failure(new RuntimeException()));
+
+    Try<FetchedEndDigits> result = subject.getLatestEndDigits();
+
+    assertThat(result, isFailedTryWithException(RuntimeException.class));
+
   }
-
 }

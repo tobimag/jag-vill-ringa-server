@@ -1,4 +1,4 @@
-package com.example.enddigitsfetcher.matchers;
+package com.example.enddigitsfetcher.matcher;
 
 import com.jasongoodwin.monads.Try;
 import lombok.AllArgsConstructor;
@@ -7,12 +7,12 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 @AllArgsConstructor
-public class IsSuccessfulTryWithValue<T> extends TypeSafeDiagnosingMatcher<Try<? extends T>> {
+public class SuccessfulTryWithValue<T> extends TypeSafeDiagnosingMatcher<Try<? extends T>> {
 
   private final Matcher<T> matcher;
 
-  public static <T> Matcher<Try<T>> isSuccessfulTryWithValue(final Matcher<T> matcher) {
-    return new IsSuccessfulTryWithValue(matcher);
+  public static <T> Matcher<Try<? extends T>> isSuccessfulTryWith(final Matcher<T> matcher) {
+    return new SuccessfulTryWithValue<>(matcher);
   }
 
   @Override

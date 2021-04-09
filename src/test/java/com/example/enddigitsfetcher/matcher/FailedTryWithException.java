@@ -1,4 +1,4 @@
-package com.example.enddigitsfetcher.matchers;
+package com.example.enddigitsfetcher.matcher;
 
 import com.jasongoodwin.monads.Try;
 import lombok.AllArgsConstructor;
@@ -8,12 +8,12 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 import org.hamcrest.core.Is;
 
 @AllArgsConstructor
-public class IsFailedTryWithException extends TypeSafeDiagnosingMatcher<Try<?>> {
+public class FailedTryWithException extends TypeSafeDiagnosingMatcher<Try<?>> {
 
   private final Matcher<?> expectedException;
 
   public static Matcher<Try<?>> isFailedTryWithException(Class<? extends Throwable> e) {
-    return new IsFailedTryWithException(Is.isA(e));
+    return new FailedTryWithException(Is.isA(e));
   }
 
   @Override

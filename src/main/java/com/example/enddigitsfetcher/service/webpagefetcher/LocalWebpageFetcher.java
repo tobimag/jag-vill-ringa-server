@@ -21,7 +21,7 @@ public class LocalWebpageFetcher implements WebpageFetcher {
   }
 
   @Override
-  public Try<Document> get() {
+  public Try<Document> getWebpage() {
     return Try.ofFailable(() -> Jsoup.parse(getFile(), "UTF-8"))
         .onFailure(throwable -> log.info(throwable.getMessage()));
   }

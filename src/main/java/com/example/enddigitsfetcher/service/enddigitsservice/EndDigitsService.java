@@ -1,13 +1,12 @@
 package com.example.enddigitsfetcher.service.enddigitsservice;
 
-import static com.jasongoodwin.monads.Try.ofFailable;
+import static java.time.OffsetDateTime.now;
 
-import com.example.enddigitsfetcher.repository.EndDigitsEntity;
+import com.example.enddigitsfetcher.domain.FetchedEndDigits;
 import com.example.enddigitsfetcher.repository.EndDigitsRepository;
 import com.example.enddigitsfetcher.service.webpagefetcher.WebpageFetcher;
 import com.example.enddigitsfetcher.service.webpagefetcher.WebpageParser;
 import com.jasongoodwin.monads.Try;
-import javax.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,23 +20,22 @@ public class EndDigitsService {
   private final WebpageParser webpageParser;
   private final EndDigitsRepository repository;
 
-  public Try<Void> storeEndDigits() {
-    return fetchCurrentEndDigits()
-        .onSuccess(repository::save)
-        .onFailure(throwable -> log.info(throwable.getMessage()))
-        .map(entity -> null);
+  public Try<FetchedEndDigits> storeCurrentEndDigits() {
+    return this.fetchCurrentEndDigits()
+               .flatMap(repository::save)
+               .onFailure(throwable -> log.info(throwable.getMessage()));
   }
 
-  public Try<EndDigitsEntity> fetchCurrentEndDigits() {
-    return webpageFetcher.get()
-        .flatMap(webpageParser::parseWebpage)
-        .onFailure(throwable -> log.info(throwable.getMessage()))
-        .map(EndDigitsEntity::create);
+  public Try<FetchedEndDigits> fetchCurrentEndDigits() {
+    return webpageFetcher.getWebpage()
+                         .flatMap(webpageParser::parseWebpage)
+                         .map(endDigits -> new FetchedEndDigits(endDigits, now()))
+                         .onFailure(throwable -> log.info(throwable.getMessage()));
   }
 
-  public Try<EndDigitsEntity> getLatestEndDigits() {
-    return ofFailable(() -> repository.findTopByOrderByIdDesc().get())
-        .recoverWith(t -> Try.failure(new EntityNotFoundException("Unable to retrieve stored end digits!")));
+  public Try<FetchedEndDigits> getLatestEndDigits() {
+    return repository.getLatestEndDigits()
+                     .onFailure(throwable -> log.info(throwable.getMessage()));
   }
 
 }
