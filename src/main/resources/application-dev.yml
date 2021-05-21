@@ -11,3 +11,12 @@ spring:
 
 end-digits-fetcher:
   local-file: sverigesradio.html
+
+basic-auth:
+  users:
+    - username: user
+      password: password
+      role: USER
+    - username: admin
+      password: admin
+      role: ADMIN

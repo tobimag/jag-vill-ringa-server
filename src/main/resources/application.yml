@@ -11,3 +11,12 @@ spring:
 
 end-digits-fetcher:
   url: https://sverigesradio.se/ringsaspelarvi
+
+  basic-auth:
+    users:
+      - username: user
+        password: ${USERPASS}
+        role: USER
+      - username: admin
+        password: ${ADMINPASS}
+        role: ADMIN

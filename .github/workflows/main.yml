@@ -85,3 +85,5 @@ jobs:
             --zone "$GCE_INSTANCE_ZONE" \
             --container-image "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
             --container-env DBPASS="$DB_PASSWORD"
+            --container-env USERPASS="$USER_PASSWORD"
+            --container-env ADMINPASS="$ADMIN_PASSWORD"

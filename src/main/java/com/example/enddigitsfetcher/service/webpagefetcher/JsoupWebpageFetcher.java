@@ -15,7 +15,7 @@ public class JsoupWebpageFetcher implements WebpageFetcher {
   private final String url;
 
   public JsoupWebpageFetcher(WebpageFetcherProperties properties) {
-    this.url = properties.url;
+    this.url = properties.getUrl();
   }
 
   @Override

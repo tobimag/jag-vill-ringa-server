@@ -17,7 +17,7 @@ public class LocalWebpageFetcher implements WebpageFetcher {
   private final String filename;
 
   public LocalWebpageFetcher(WebpageFetcherProperties properties) {
-    this.filename = properties.localFile;
+    this.filename = properties.getLocalFile();
   }
 
   @Override
