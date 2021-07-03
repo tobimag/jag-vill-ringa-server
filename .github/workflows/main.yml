@@ -9,11 +9,11 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   IMAGE: end-digits-fetcher
+  SERVICE_NAME: end-digits-fetcher
+  REGION: europe-north1
   HOST: eu.gcr.io
   CONTAINER_REGISTRY_ACCOUNT_KEY: ${{ secrets.GCP_SA_KEY }}
-  COMPUTE_ENGINE_ACCOUNT_KEY: ${{ secrets.GCP_COMPUTE_ENGINE_SA_KEY }}
-  GCE_INSTANCE: jag-vill-ringa-instance
-  GCE_INSTANCE_ZONE: europe-north1-a
+  CLOUD_RUN_ACCOUNT_KEY: ${{ secrets.GCP_CLOUD_RUN_SA_KEY }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
 jobs:
@@ -75,15 +75,16 @@ jobs:
       - name: Setup gcloud
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
-          service_account_key: ${{ env.COMPUTE_ENGINE_ACCOUNT_KEY }}
+          service_account_key: ${{ env.CLOUD_RUN_ACCOUNT_KEY }}
           project_id: ${{ env.PROJECT_ID }}
           export_default_credentials: true
 
       - name: Deploy
         run: |-
-          gcloud compute instances update-container "$GCE_INSTANCE" \
-            --zone "$GCE_INSTANCE_ZONE" \
-            --container-image "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
-            --container-env DBPASS="$DB_PASSWORD" \
-            --container-env USERPASS="$USER_PASSWORD" \
-            --container-env ADMINPASS="$ADMIN_PASSWORD"
+          gcloud run deploy "$SERVICE_NAME" \
+                      --image "$HOST/$PROJECT_ID/$IMAGE:$GITHUB_SHA" \
+                      --region "$REGION" \
+                      --set-env-vars DBPASS="$DB_PASSWORD" \
+                      --set-env-vars USERPASS="$USER_PASSWORD" \
+                      --set-env-vars ADMINPASS="$ADMIN_PASSWORD" \
+                      --platform "managed"
