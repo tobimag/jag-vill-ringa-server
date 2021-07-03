@@ -88,3 +88,4 @@ jobs:
                       --set-env-vars USERPASS="$USER_PASSWORD" \
                       --set-env-vars ADMINPASS="$ADMIN_PASSWORD" \
                       --platform "managed"
+                      --allow-unauthenticated
