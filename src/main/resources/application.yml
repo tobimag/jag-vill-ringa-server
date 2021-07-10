@@ -1,4 +1,5 @@
 server:
+  port: 8080
   error:
     include-message: always
 
@@ -12,11 +13,11 @@ spring:
 end-digits-fetcher:
   url: https://sverigesradio.se/ringsaspelarvi
 
-  basic-auth:
-    users:
-      - username: user
-        password: ${USERPASS}
-        role: USER
-      - username: admin
-        password: ${ADMINPASS}
-        role: ADMIN
+basic-auth:
+  users:
+    - username: user
+      password: ${USERPASS}
+      role: USER
+    - username: admin
+      password: ${ADMINPASS}
+      role: ADMIN

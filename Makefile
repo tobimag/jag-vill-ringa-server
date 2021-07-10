@@ -36,9 +36,9 @@ run: build
 	java -jar build/libs/end-digits-fetcher-0.0.1-SNAPSHOT.jar
 
 docker-run: docker-clean docker-build docker-create-network start-postgres
-	docker run --network ${NETWORK} --name ${APPLICATION_CONTAINER_NAME} -e "SPRING_PROFILES_ACTIVE=live" -p 8080:8080 -d ${DOCKER_IMAGE}
+	docker run --network ${NETWORK} --name ${APPLICATION_CONTAINER_NAME} -e "SPRING_PROFILES_ACTIVE=live" -p 8080:8080 -p 8081:8081 -d ${DOCKER_IMAGE}
 
 docker-run-dev: docker-clean docker-build docker-create-network start-postgres
-	docker run --network ${NETWORK} --name ${APPLICATION_CONTAINER_NAME}-dev -e "SPRING_PROFILES_ACTIVE=dev" -p 8080:8080 -d ${DOCKER_IMAGE}
+	docker run --network ${NETWORK} --name ${APPLICATION_CONTAINER_NAME}-dev -e "SPRING_PROFILES_ACTIVE=dev" -p 8080:8080 -p 8081:8081 -d ${DOCKER_IMAGE}
 
 .PHONEY: build, run, clean, docker-build, docker-run, docker-run-dev, start-postgres
