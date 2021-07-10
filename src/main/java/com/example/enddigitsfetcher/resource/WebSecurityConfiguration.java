@@ -37,6 +37,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()
         .antMatchers("/api/v1/end-digits/latest").hasRole("USER")
         .antMatchers("/api/v1/end-digits/").hasRole("ADMIN")
-        .anyRequest().authenticated().and().httpBasic();
+        .anyRequest().authenticated().and().httpBasic()
+        .and()
+        .authorizeRequests()
+        .anyRequest().permitAll();
   }
 }
